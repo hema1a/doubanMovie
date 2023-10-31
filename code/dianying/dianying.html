@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+.weixin:hover>.weixinImg{
+    width: 60px;
+    height: 60px;
+    display: block;
+}
+.weixinImg img{
+    width: 60px;
+    height: 60px;
+}
+.weixin .weixinImg{
+    display: none;
+}
+</style>
+<body>
+    <div id="app">
+        <!-- <button @click="getDatas()">获取数据</button> -->
+        <div id="head-linktext">
+            <div class="head-linktext-left">
+                <span> <a>豆瓣</a> </span>
+                <span> <a>读书</a> </span>
+                <span> <a>电影</a> </span>
+                <span> <a>音乐</a> </span>
+                <span> <a>同城</a> </span>
+                <span> <a>小组</a> </span>
+                <span> <a>阅读</a> </span>
+                <span> <a>FM</a> </span>
+                <span> <a>时间</a> </span>
+                <span> <a>豆品</a> </span>
+                </div>
+            <div class="head-linktext-right">
+                <span> <a>下载豆瓣客户端</a> </span>
+                <span> <a>登录/注册</a> </span>
+            </div>
+        </div>
+        <div id="head-inp">
+            <div class="head-input">
+                <div class="head-input-img">
+                    <img src="images/doubandianying.png">
+                </div>
+                <div class="head-input-inp">
+                    <input type="text" v-model="searchText" placeholder="搜索电影、电视剧、综艺、影人">
+                    <div> <img src="images/seach-icon.png"></div>
+                </div>
+            </div>
+            <div class="head-inp-linktext">
+                <span> <a>影讯&购票</a> </span>
+                <span> <a>选电影</a> </span>
+                <span> <a>电视剧</a> </span>
+                <span> <a>排行榜</a> </span>
+                <span> <a>影评</a> </span>
+                <span> <a>2022年度榜单</a> </span>
+                <span> <a>2022书影报告</a> </span>
+            </div>
+        </div>
+        <div id="body-box">
+            <div id="body-box-left">
+                    <!-- 正在热映 -->
+                <div id="list">
+                    <div class="list-linktext">
+                        <span class="list-linktext-first">正在热映</span>
+                        <span class="list-linktext-text"><a>全部正在热映</a> <a class="jiantou">>></a></span>
+                        <span class="list-linktext-text"><a>即将上映</a> <a class="jiantou">>></a></span>
+                    </div>
+                    <div class="list-box">
+                        <div class="list-item" v-for="(item) in showList1"  >
+                            <div class="list-item-imgs">
+                                <img :src="item.data[0].poster"> 
+                            </div>
+                            <div class="list-item-name"> {{item.data[0].name}} </div>
+                            <div class="list-item-score">评分： {{item.doubanRating}}</div>
+                            <div  class="list-item-but">购票选座</div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- 最近热门电影 -->
+                <div id="list1">
+                    <div class="list-linktext">
+                        <span class="list-linktext-first">最近热门电影</span>
+                        <span class="list-linktext-text text-first"><a>热门</a></span>
+                        <span class="list-linktext-text"><a>最新</a> </span>
+                        <span class="list-linktext-text"><a>豆瓣高分</a> </span>
+                        <span class="list-linktext-text"><a>冷门佳片</a> </span>
+                        <span class="list-linktext-text"><a>欧美</a> </span>
+                        <span class="list-linktext-text"><a>韩国</a> </span>
+                        <span class="list-linktext-text"><a>日本</a> </span>
+                    </div>
+                    <div class="list1-box">
+                        <div class="list1-item" v-for="(item1) in showList2" >
+                            <div class="list1-item-imgs">
+                                <img :src="item1.data[0].poster">
+                            </div>
+                            <div class="list1-item-text">
+                                <div class="list1-item-name">{{item1.data[0].name}}</div>
+                                <div class="list1-item-score">{{item1.doubanRating}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 云影院精选 -->
+                <div id="list2">
+                    <div class="list-linktext">
+                        <span class="list-linktext-first">云影院精选</span>
+                        <span class="list-linktext-text"><a>中文</a></span>
+                        <span class="list-linktext-text"><a>日语</a> </span>
+                        <span class="list-linktext-text"><a>汉语</a> </span>
+                        <span class="list-linktext-text"><a>英语</a> </span>
+                        <span class="list-linktext-text"><a>综艺</a> </span>
+                        <span class="list-linktext-text"><a>纪录片</a> </span>
+                    </div>
+                    <div class="list1-box">
+                        <div class="list1-item" v-for="(item1) in showList4">
+                            <div class="list1-item-imgs">
+                                <img :src="item1.data[0].poster">
+                            </div>
+                            <div class="list1-item-text">
+                                <div class="list1-item-name">{{item1.data[0].name}}</div>
+                                <div class="list1-item-score">{{item1.doubanRating}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="body-box-right">
+               <div class="bawen"> <span><a>豆瓣电影评分八问</a></span> </div>
+               <div class="weekList">
+                    <div class="weekList-head">
+                        <span class="weekList-head-max">一周口碑榜</span>
+                        <span class="weekList-head-min">更多榜单</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">1</span>
+                        <span class="weekList-item-name">坠落的审判</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">2</span>
+                        <span class="weekList-item-name">河边的错误</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">3</span>
+                        <span class="weekList-item-name">电锯惊魂10</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">4</span>
+                        <span class="weekList-item-name">自由之声</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">5</span>
+                        <span class="weekList-item-name">鸽子隧道</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">6</span>
+                        <span class="weekList-item-name">石门</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">7</span>
+                        <span class="weekList-item-name">一个和四个</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">8</span>
+                        <span class="weekList-item-name">白塔之光</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">9</span>
+                        <span class="weekList-item-name">借口公司2</span>
+                    </div>
+                    <div class="weekList-item">
+                        <span class="weekList-item-num">10</span>
+                        <span class="weekList-item-name">偶滴神啊2</span>
+                    </div>
+               </div>
+               <div class="remen">
+                    <div class="weekList-head">
+                            <span class="weekList-head-max">热门片单</span>
+                        </div>
+                        <div class="weekList-item">
+                            <span class="remen-item-name">所谓呢喃核（Mumblecore）</span>
+                            <span class="remen-item-refer">43推荐</span>
+                        </div>
+                        <div class="weekList-item">
+                            <span class="remen-item-name">漫威电影宇宙(MCU)系列影视条目及顺序</span>
+                            <span class="remen-item-refer">95推荐</span>
+                        </div>
+                </div>
+                   <div class="hezuo">
+                        <div class="weekList-head hezuo-head">
+                            <span class="weekList-head-max ">合作联系</span>
+                        </div>
+                        <div class="hezuo-text">
+                            <div class="hezuo-text-item">电影合作邮箱： movie@douban.com</div>
+                            <div class="hezuo-text-item">电视剧合作邮箱: TV@douban.com</div>
+                        </div>
+                   </div> 
+                   <div class="guanzhu">
+                        <div class="weekList-head">
+                            <span class="weekList-head-max">关注我们</span>
+                        </div>
+                        <div class="guanzhu-box">
+                            <span>
+                                <img src="images/weibo.png">
+                                <a>微博</a>
+                            </span>
+                            <span class="weixin">
+                                <img src="images/weixin.png">
+                                <a>微信</a>
+                                <div class="weixinImg">
+                                    <img src="images/weixinImg.png">
+                                </div>
+                            </span>
+                        </div>
+                   </div>
+               </div>
+            </div>    
+        </div>
+        <div id="bottom-box">
+            <div class="bottom-left">
+                 <span class="bottom-firsttext"><a>© 2005－2023 douba.com, all rights reserved 北京豆瓣有限公司</a></span>
+            </div>
+            <div class="bottom-right">
+                <span><a>关于豆瓣</a></span>
+                <span><a>加入我们</a></span>
+                <span><a>联系我们</a></span>
+                <span><a>法律声明</a></span>
+                <span><a>帮助中心</a></span>
+                <span><a>移动应用</a></span>
+                <span><a>豆瓣广告</a></span>
+            </div>
+            
+        </div>
+    </div>
+</body>
+<script src="D:\software\vsprogram\jqueryStudy\vue\vue.js"></script>   
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script><script>
+    var  vm= new Vue({
+        el:"#app",
+       data(){
+        return {
+            mList:[],
+            searchText:'',
+
+            
+        }
+       },
+        methods:{
+           getDatas(){
+             axios.get("https://api.wmdb.tv/api/v1/top?type=Imdb&skip=0&limit=40&lang=Cn").then(response => {
+                    this.mList = response.data;//60个
+                    
+                   
+                    item1 = this.mList[0];
+                    console.log(item1);
+                    // 过滤前五个为空
+                    for (var i = 0; i < 5; i++) {
+                        if (this.mList[i].alias == '') {
+                            console.log("有个mList.alias为空");
+                        }
+                        else {
+                            console.log("这个有名字")
+                            console.log(this.mList[i].alias);
+                        }
+                    }
+                });
+           
+           },
+          
+        },
+        computed:{
+            showList1(){
+                /*
+                这里对showlist数据其实是获取到mlist数组中的对象了的，但是浏览器控制台会先输出一遍空，
+               此时报错原因：vue.min.js:6  TypeError: Cannot read properties of undefined (reading 'data')
+                再等一会 输出不为空的showList 
+                */ 
+             console.log("this:*************")
+                console.log(this);
+                var showlist=[];
+             var showlist1 = [];
+                    for (var i = 0; i < 10; i++) {
+                        // if(this.mList[i].alias!=''){
+                            showlist[i] = this.mList[i];
+                            console.log("this.mList[i]");
+                            console.log(this.mList[i]);
+                            console.log("showList1.alias:");
+                            console.log(showlist[i])
+                        //  }
+                    }
+                    for(var j=2;j<7;j++){
+                        showlist1[j-2]=showlist[j];
+                    }
+                    return showlist1;
+            },
+            showList2(){
+                 var showlist = [{}, {}, {}, {}, {}];
+                 var showlist1=[{},{},{},{},{}]
+                for (var i = 0; i < 20; i++) {
+                    // if(this.mList[i].alias!=''){
+                    showlist[i] = this.mList[i];
+                    console.log("this.mList[i]");
+                    console.log(this.mList[i]);
+                    console.log("showList2.alias:");
+                    console.log(showlist[i])
+                    //  }
+                }
+                for(var j=10;j<20;j++){
+                    showlist1[j-10]=showlist[j];
+                }
+                return showlist1;
+            },
+            showList3() {
+                var showlist = [{}, {}, {}, {}, {}];
+                var showlist1 = [{}, {}, {}, {}, {}]
+                for (var i = 0; i < 30; i++) {
+                    // if(this.mList[i].alias!=''){
+                    showlist[i] = this.mList[i];
+                    console.log("this.mList[i]");
+                    console.log(this.mList[i]);
+                    console.log("showList2.alias:");
+                    console.log(showlist[i])
+                    //  }
+                }
+                for (var j = 20; j < 30; j++) {
+                    showlist1[j - 20] = showlist[j];
+                }
+                return showlist1;
+            },
+            showList4() {
+                var showlist = [{}, {}, {}, {}, {}];
+                var showlist1 = [{}, {}, {}, {}, {}]
+                for (var i = 0; i < 40; i++) {
+                    // if(this.mList[i].alias!=''){
+                    showlist[i] = this.mList[i];
+                    console.log("this.mList[i]");
+                    console.log(this.mList[i]);
+                    console.log("showList2.alias:");
+                    console.log(showlist[i])
+                    //  }
+                }
+                for (var j = 30; j < 40; j++) {
+                    showlist1[j - 30] = showlist[j];
+                }
+                return showlist1;
+            },
+            
+            
+        },
+        // 页面加载完全执行
+        mounted(){
+           
+           this.getDatas();
+        }
+    })
+
+</script>
+</html>
